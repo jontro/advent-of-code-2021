@@ -7,4 +7,6 @@ fun main() {
     println(run3pt2())
     println(run4pt1())
     println(run4pt2())
+    println(run5pt1())
+    println(run5pt2())
 }
