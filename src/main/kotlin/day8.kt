@@ -1,5 +1,4 @@
 import java.io.File
-import kotlin.math.abs
 
 private fun getInput(): List<Pair<List<String>, List<String>>> {
     return File("/Users/jonas/Documents/workspace/advent-of-code-2021/src/main/kotlin/day8input.txt").readText()
@@ -25,35 +24,33 @@ fun run8pt2(): Int {
         row.second.map { charsToNum[it].toString() }.joinToString("").toInt()
     }
 }
-
+fun String.toList() = toCharArray().toList()
+fun String.containsAll(str: String?) = toList().containsAll(str!!.toList())
 fun mapCharsToNum(signals: List<String>): Map<String, Int> {
     val knownCharsToNumByLength = mapOf(2 to 1, 4 to 4, 3 to 7, 7 to 8)
-    val known = signals.map {
-        Pair(knownCharsToNumByLength[it.length], it)
-    }.filterNot { it.first == null }.associateBy ({ it.first!! },{it.second}).toMutableMap()
-
+    val known = signals.filter { knownCharsToNumByLength[it.length] != null }.associateBy({ knownCharsToNumByLength[it.length]!! }, {it}).toMutableMap()
     val remainingSignals = signals.toMutableList().filterNot {known.values.contains(it) }
     known[2] = remainingSignals.filter { it.length == 5 }.filter {
-        if (it.toCharArray().toList().containsAll(known[1]!!.toCharArray().toList())) {
+        if (it.containsAll(known[1])) {
             known[3] = it
             false
         } else true
     }.filter {
-        if (it.toCharArray().toList().containsAll(known[4]!!.toCharArray().toList().filterNot { known[1]!!.toCharArray().toList().contains(it) })) {
+        if (it.toList().containsAll(known[4]!!.toList().filterNot { known[1]!!.toList().contains(it) })) {
             known[5] = it
             false
         } else true
     }.first()
     known[9] = remainingSignals.filter { it.length == 6 }.filter {
-        if (!it.toCharArray().toList().containsAll(known[7]!!.toCharArray().toList())) {
+        if (!it.containsAll(known[7])) {
             known[6] = it
             false
         } else true
     }.filter {
-        if (!it.toCharArray().toList().containsAll(known[4]!!.toCharArray().toList())) {
+        if (!it.containsAll(known[4])) {
             known[0] = it
             false
         } else true
     }.first()
-    return known.entries.associateBy({it.value},{it.key})
+    return known.entries.associateBy({it.value}, {it.key!!})
 }
