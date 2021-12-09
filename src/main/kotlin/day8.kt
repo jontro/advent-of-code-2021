@@ -33,11 +33,11 @@ fun mapCharsToNum(signals: List<Set<Char>>): Map<Set<Char>, Int> {
     val remainingSignals = signals.filterNot {known.values.contains(it) }.sortedBy { it.size }.toMutableList()
     for ((match, fn, number) in listOf(
         Triple(known[1], inc, 3),
-        Triple(known[4]!!.filterNot { known[1]!!.contains(it) }, inc, 5),
+        Triple(known[4]!! subtract known[1]!! , inc, 5),
         Triple(null, inc, 2),
         Triple(known[7], exl, 6),
         Triple(known[4], exl, 0),
-        Triple(null,exl, 9)
+        Triple(null, exl, 9)
     )) {
         known[number] = if (match != null) {
             remainingSignals.removeAt(remainingSignals.indexOfFirst { fn(it, match)})
