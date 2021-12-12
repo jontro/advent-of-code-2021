@@ -14,12 +14,12 @@ private fun flash(input: MutableList<MutableList<Int>>, x:Int ,y: Int) {
         -1 to  1, 0 to  1, 1 to  1)) {
         val checkX = x + newX
         val checkY = y + newY
-        try {
+        if (checkY in input.indices && checkX in input[checkY].indices) {
             input[checkY][checkX]++
             if (input[checkY][checkX] == 10) {
                 flash(input, checkX, checkY)
             }
-        }catch (t: IndexOutOfBoundsException) {}
+        }
     }
 }
 
